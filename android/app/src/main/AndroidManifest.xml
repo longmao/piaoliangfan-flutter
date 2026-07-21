@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- image_picker 拍照按钮需要 CAMERA 权限（相册走 PhotoPicker 无需 storage 权限） -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
     <application
         android:label="piaoliangfan_flutter"
         android:name="${applicationName}"

@@ -138,10 +138,13 @@ class HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImage() async => _pickFromSource(ImageSource.gallery);
+  Future<void> _takePhoto() async => _pickFromSource(ImageSource.camera);
+
+  Future<void> _pickFromSource(ImageSource source) async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(
-      source: ImageSource.gallery,
+      source: source,
       imageQuality: 70,
       maxWidth: 1280,
     );
@@ -367,13 +370,30 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            TextButton(
-              key: const Key('bypassSample'),
-              onPressed: _loadSample,
-              child: const Text(
-                '用示例图（测试）',
-                style: TextStyle(color: Color(0xFFFFB04A), fontSize: 13),
-              ),
+            const SizedBox(height: 8),
+            // 拍照按钮：与"选图"并列，调用 ImageSource.camera（需 CAMERA 权限 + iOS NSCameraUsageDescription）
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton.icon(
+                  key: const Key('takePhoto'),
+                  onPressed: _takePhoto,
+                  icon: const Icon(Icons.photo_camera_outlined, size: 18, color: Color(0xFFFF7A45)),
+                  label: const Text(
+                    '拍照',
+                    style: TextStyle(color: Color(0xFFFF7A45), fontSize: 14, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                TextButton(
+                  key: const Key('bypassSample'),
+                  onPressed: _loadSample,
+                  child: const Text(
+                    '用示例图（测试）',
+                    style: TextStyle(color: Color(0xFFFFB04A), fontSize: 13),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
