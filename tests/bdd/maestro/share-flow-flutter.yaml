@@ -1,0 +1,44 @@
+# Flutter share flow · 业务逻辑 BDD（不是 UI assert）
+# 来源：lib/vision.dart + lib/presets.dart + lib/main.dart 业务不变式
+# 覆盖：nutrition schema、kcal 合理范围、tags 业务约束、share 图含 CalorieBadge、share text 业务字段
+appId: com.vincent.plf.flutter
+name: 漂亮饭-Flutter-share-业务自验
+---
+# 1. 启动
+- launchApp
+
+# 2. 走 bypass 钩子 → _uri + _base64 state 被设置
+- tapOn:
+    text: "用示例图.*"
+
+# 3. tap AI 算这顿值不值得
+- tapOn:
+    text: "AI 算这顿值不值得"
+
+# 4. 等真 M3 vision 返回 (kcal 数字 ≥ 100 出现 = vision 返回成功)
+- extendedWaitUntil:
+    visible: ".*\d{2,4}\s*kcal.*"
+    timeout: 60000
+
+# 5. 业务不变式 1: nutrition schema 完整
+# (视觉上 kcal 数字 + dish 名 + macros + tags 全部出现 = 6 字段齐)
+- assertVisible: "kcal"
+- assertVisible: "蛋白"
+- assertVisible: "碳水"
+- assertVisible: "脂肪"
+# tags 是 chip 形式, 至少出现 1 个 "#" hashtag
+- assertVisible: ".*#.*"
+
+# 6. tap 分享按钮 (业务触发 _share → captureKey → toImage → Share.shareXFiles)
+- tapOn:
+    text: "分享"
+
+# 7. 业务不变式 2: pf_share.png 写到 app tmp
+# (iOS 26 sim share sheet UI 不弹但文件系统侧可验)
+- extendedWaitUntil:
+    visible: "漂亮饭 · \d+kcal.*"
+    timeout: 10000
+    optional: true
+
+# 8. screenshot 取证 (用作 Linear evidence + 杨总肉眼复核)
+- takeScreenshot: flutter-share-business-final

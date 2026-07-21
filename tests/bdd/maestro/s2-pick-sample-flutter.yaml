@@ -1,0 +1,22 @@
+# S-2: 空态 → 选图后态 (US-1)
+# 业务不变式: bypass tap 后 preview 显示 + preset 4 chip 全 + AI 算/分享按钮出现
+appId: com.vincent.plf.flutter
+name: S2-选图-Flutter
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "用示例图（测试）"
+    timeout: 10000
+# tap bypass → _uri + _base64 state 设置
+- tapOn:
+    text: "用示例图（测试）"
+# 业务不变式 1：preset row 4 个 chip 全出现
+- assertVisible: "原片"
+- assertVisible: "暖白"
+- assertVisible: "番茄橙"
+- assertVisible: "胶片框"
+# 业务不变式 2：AI 算按钮出现
+- assertVisible: "AI 算这顿值不值得"
+# 业务不变式 3：分享按钮出现（enabled）
+- assertVisible: "分享"
+- takeScreenshot: s2-after-pick-sample

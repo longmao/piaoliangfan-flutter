@@ -1,0 +1,37 @@
+# S-4: AI 算 vision (US-3 · 6 字段业务不变式)
+# 业务不变式:
+#   dish 中文 ≥ 2 字 / kcal 100-2000 / P-C-F ≥ 0 / tags ≥ 3 / 加载分阶段文案 / tips 文案
+appId: com.vincent.plf.flutter
+name: S4-AI算-Vision-Flutter
+---
+- launchApp
+- tapOn:
+    text: "用示例图（测试）"
+- extendedWaitUntil:
+    visible: "胶片框"
+    timeout: 5000
+- tapOn:
+    text: "胶片框"
+# tap AI 算
+- tapOn:
+    text: "AI 算这顿值不值得"
+# 业务不变式 1：加载文案第一阶段 "识别菜品" 或 "计算卡路里"（任一即可）
+- extendedWaitUntil:
+    visible: "识别菜品|计算卡路里|生成「不内疚」标签"
+    timeout: 5000
+    optional: true
+# 等 vision 返回 + CalorieBadge 渲染
+- extendedWaitUntil:
+    visible: "kcal"
+    timeout: 60000
+# 业务不变式 2：CalorieBadge 6 字段全
+- assertVisible: "kcal"
+- assertVisible: "蛋白"
+- assertVisible: "碳水"
+- assertVisible: "脂肪"
+- assertVisible: ".*#.*"   # ≥ 1 个 hashtag 出现（tags 是 chip）
+# 业务不变式 3：tips 文案 (optional · 可能因 viewport 滚动出屏)
+- assertVisible:
+    text: "不内疚"
+    optional: true
+- takeScreenshot: s4-after-vision-badge

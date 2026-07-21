@@ -1,0 +1,17 @@
+# S-3: preset 切换到「胶片框」(US-2)
+# 业务不变式: 高亮 + 日期戳出现
+appId: com.vincent.plf.flutter
+name: S3-preset-胶片框-Flutter
+---
+- launchApp
+- tapOn:
+    text: "用示例图（测试）"
+- extendedWaitUntil:
+    visible: "胶片框"
+    timeout: 5000
+# tap 胶片框 chip
+- tapOn:
+    text: "胶片框"
+# 业务不变式 1：日期戳 "PIAOLIANGFAN · 2026.07.21" 出现在 preview (胶片框装饰)
+- assertVisible: "PIAOLIANGFAN.*2026.07.21"
+- takeScreenshot: s3-preset-dazz-selected

@@ -1,0 +1,38 @@
+# Maestro flow · 漂亮饭 Flutter app
+# 对应 bdd/核心交互流程.feature.md 的主 Scenario
+# 图片 ganguoxia.jpg 已 addmedia 进模拟器相册（相册第一张）
+appId: com.piaoliangfan.piaoliangfanFlutter
+name: 漂亮饭-Flutter-核心流程
+---
+# 1. 启动 → 占位框
+- launchApp
+- assertVisible:
+    text: ".*漂亮饭.*"
+
+# 2. bypass 系统 PHPicker（iOS picker 进程隔离难自动化）→ 用内置示例图钩子
+- tapOn:
+    text: ".*用示例图.*"
+
+# 4. 回主界面，应出现 AI 算按钮
+- extendedWaitUntil:
+    visible: ".*算.*"
+    timeout: 10000
+
+# 5. 截图：选图后、未美化（baseline）
+- takeScreenshot: flutter-02-picked
+
+# 6. 选「胶片框」预设
+- tapOn:
+    text: "胶片框"
+
+# 7. 点 AI 算
+- tapOn:
+    text: ".*算.*值不值得.*"
+
+# 8. 等真 M3 识别出 kcal 标签（loading → 结果）
+- extendedWaitUntil:
+    visible: ".*kcal.*"
+    timeout: 45000
+
+# 9. 截图：图文编排结果（核心炫感验收点）
+- takeScreenshot: flutter-03-result

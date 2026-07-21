@@ -1,0 +1,22 @@
+# S-1: 启动 + 网络预热 (US-5)
+# 业务不变式: _netReady=true 在 5s 内，标题/副标题/placeholder/bypass 都可见
+appId: com.vincent.plf.flutter
+name: S1-启动-网络预热-Flutter
+---
+- launchApp
+# 启动屏：🍱 emoji + "漂亮饭" + "让一顿饭值得发" + "正在连接网络…" → 主页
+- extendedWaitUntil:
+    visible: ".*选一张.*"
+    timeout: 10000
+# 业务不变式 1：标题 + 副标题
+- assertVisible: "漂亮饭"
+- assertVisible: ".*漂亮饭.*"
+# 业务不变式 2：placeholder 选图区（regex 容错中文匹配）
+- assertVisible: ".*选.*张.*"
+# 业务不变式 3：bypass 测试钩子
+- assertVisible: ".*示例图.*"
+# 业务不变式 4：网络预热 ≤5s → "网络就绪" 出现
+- extendedWaitUntil:
+    visible: "网络就绪"
+    timeout: 5000
+- takeScreenshot: s1-launch-network-ready

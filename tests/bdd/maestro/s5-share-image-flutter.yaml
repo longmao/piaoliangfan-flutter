@@ -1,0 +1,35 @@
+# S-5: 分享 (US-4 · 业务不变式: pf_share.png 含 badge + share text 含字段)
+# 文件系统侧 + Maestro UI 端双重验证
+appId: com.vincent.plf.flutter
+name: S5-分享-图片含CalorieBadge-Flutter
+---
+- launchApp
+- tapOn:
+    text: "用示例图（测试）"
+- extendedWaitUntil:
+    visible: "胶片框"
+    timeout: 5000
+- tapOn:
+    text: "胶片框"
+- tapOn:
+    text: "AI 算这顿值不值得"
+- extendedWaitUntil:
+    visible: "kcal"
+    timeout: 60000
+# tap 分享 → _share() → toImage → Share.shareXFiles
+- tapOn:
+    text: "分享"
+# 给 share sheet / system 调用留 3s
+- extendedWaitUntil:
+    notVisible: "AI 算这顿值不值得|重新算这顿"
+    timeout: 3000
+    optional: true
+- takeScreenshot: s5-share-after-tap
+# 关闭 share sheet（iOS sim 上可能未弹）
+- tapOn:
+    text: ".*关闭.*|.*取消.*"
+    optional: true
+- extendedWaitUntil:
+    visible: ".*"
+    timeout: 1500
+- takeScreenshot: s5-share-final

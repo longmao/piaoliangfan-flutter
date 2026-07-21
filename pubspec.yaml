@@ -1,0 +1,26 @@
+name: piaoliangfan_flutter
+description: "漂亮饭 Flutter demo - 双技术栈 A/B 体验对比（RN vs Flutter）"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  http: ^1.2.2
+  image_picker: ^1.1.2
+  share_plus: ^11.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

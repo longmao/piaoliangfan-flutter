@@ -1,0 +1,9 @@
+appId: com.piaoliangfan.piaoliangfanFlutter
+name: probe-picker
+---
+- launchApp
+- tapOn:
+    text: ".*选一张.*"
+- tapOn:
+    point: 25%,25%
+- takeScreenshot: picker-after-select

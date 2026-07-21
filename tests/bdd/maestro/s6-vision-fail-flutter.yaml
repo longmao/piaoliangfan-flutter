@@ -1,0 +1,23 @@
+# S-6: vision 失败容错 (US-6)
+# 业务不变式: 错误文案 + 重试按钮 + preview 不白屏
+# 触发: 把 config.dart 的 MINIMAX_API_KEY 临时改成 "INVALID" 重打包
+# 本 scenario 默认仅做"已存在 vision 失败 UI" 的视觉契约验证（label 存在）
+# 实际注入 INVALID key 需要 build task，不在 BDD 范围内
+appId: com.vincent.plf.flutter
+name: S6-容错-vision失败-Flutter
+---
+- launchApp
+- tapOn:
+    text: "用示例图（测试）"
+- extendedWaitUntil:
+    visible: "胶片框"
+    timeout: 5000
+- tapOn:
+    text: "胶片框"
+- tapOn:
+    text: "AI 算这顿值不值得"
+# 等 vision 失败 / 成功任一（≤ 60s）
+- extendedWaitUntil:
+    visible: "kcal|⚠️.*"
+    timeout: 60000
+- takeScreenshot: s6-after-analyze-result
