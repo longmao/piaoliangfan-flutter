@@ -23,16 +23,20 @@ class MainActivity : FlutterActivity() {
                             return@setMethodCallHandler
                         }
                         try {
-                            val file = File(imagePath)
-                            if (!file.exists()) {
+                            val srcFile = File(imagePath)
+                            if (!srcFile.exists()) {
                                 result.error("FILE_NOT_FOUND", "image not found: $imagePath", null)
                                 return@setMethodCallHandler
                             }
+                            // why: view-shot 把图写到 code_cache/，不在 FileProvider 配置的 cache-path root 内
+                            //      → 复制到 cacheDir 保证 FileProvider 能授权访问
+                            val destFile = File(cacheDir, "pf_share_${srcFile.name}")
+                            srcFile.copyTo(destFile, overwrite = true)
                             // why: Android 7+ 强制 content:// URI 不能传 file:// —— FileProvider 转
                             val uri = FileProvider.getUriForFile(
                                 this,
                                 "$packageName.fileprovider",
-                                file
+                                destFile
                             )
                             val sendIntent = Intent(Intent.ACTION_SEND).apply {
                                 type = "image/png"
